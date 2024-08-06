@@ -14,9 +14,14 @@ namespace Grinderv2.TreeTasks
         public List<WoWUnit> SkinnableUnits()
         {
             return ObjectManager.Instance.Units.Where(x => x.IsDead && x.IsSkinnable &&
-            (Skills.Instance.GetAllPlayerSkills().Where(y => y.Id == Enums.Skills.SKINNING).Any() ?
-            Skills.Instance.GetAllPlayerSkills().Where(y => y.Id == Enums.Skills.SKINNING).FirstOrDefault().CurrentLevel >= x.RequiredSkinningLevel : false) &&
-            (Settings.NinjaSkin ? (x.TappedByMe || x.TappedByOther) : x.TappedByMe)).ToList();
+                                                           (Skills.Instance.GetAllPlayerSkills()
+                                                                .Any(y => y.Id == Enums.Skills.SKINNING)
+                                                            && Skills.Instance.GetAllPlayerSkills()
+                                                                .FirstOrDefault(y => y.Id == Enums.Skills.SKINNING)
+                                                                ?.CurrentLevel >= x.RequiredSkinningLevel)
+                                                           && (Settings.NinjaSkin
+                                                               ? (x.TappedByMe || x.TappedByOther)
+                                                               : x.TappedByMe)).ToList();
         }
 
         public override bool Activate()
@@ -27,6 +32,10 @@ namespace Grinderv2.TreeTasks
         public override void Execute()
         {
             var target = SkinnableUnits().FirstOrDefault();
+            if (target == null)
+            {
+                return;
+            }
             if (target.DistanceToPlayer > 5f)
                 Navigation.Instance.Traverse(target.Position);
             else

@@ -14,9 +14,9 @@ namespace Grinderv2.TreeTasks
         {
             return !ObjectManager.Instance.Player.IsInCombat 
                 && CustomClasses.Instance.Current.IsReadyToFight(ObjectManager.Instance.Units) 
-                && ObjectManager.Instance.Units.Where(x => CMD.CreatureWhitelist.Any(y => y.Id == x.Id) 
-                    && !x.IsDead && !x.IsPet && !x.TappedByOther 
-                    && ObjectManager.Instance.Player.InLosWith(x)).Any();
+                && ObjectManager.Instance.Units.Any(x => CMD.CreatureWhitelist.Any(y => y.Id == x.Id) 
+                                                         && !x.IsDead && !x.IsPet && !x.TappedByOther 
+                                                         && ObjectManager.Instance.Player.InLosWith(x));
         }
 
         public override void Execute()

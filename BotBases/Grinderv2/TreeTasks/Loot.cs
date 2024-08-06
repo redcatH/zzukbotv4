@@ -10,7 +10,7 @@ namespace Grinderv2.TreeTasks
 
         public override bool Activate()
         {
-            return Settings.CorpseLoot && Inventory.Instance.CountFreeSlots(false) > 0 && ObjectManager.Instance.Units.Where(x => x.CanBeLooted).Any();
+            return Settings.CorpseLoot && Inventory.Instance.CountFreeSlots(false) > 0 && ObjectManager.Instance.Units.Any(x => x.CanBeLooted);
         }
 
         public override void Execute()
@@ -19,6 +19,8 @@ namespace Grinderv2.TreeTasks
                 .Where(x => x.CanBeLooted)
                 .OrderBy(x => x.DistanceToPlayer)
                 .FirstOrDefault();
+            if (target == null)
+                return;
             if (target.DistanceToPlayer > 5f)
                 Navigation.Instance.Traverse(target.Position);
             else

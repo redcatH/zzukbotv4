@@ -13,7 +13,7 @@ namespace Grinderv2.TreeTasks
 
         public override bool Activate()
         {
-            return !ObjectManager.Instance.Units.Where(x => CMD.CreatureWhitelist.Any(y => y.Id == x.Id) && !x.IsDead).Any();
+            return !ObjectManager.Instance.Units.Any(x => CMD.CreatureWhitelist.Any(y => y.Id == x.Id) && !x.IsDead);
         }
 
         public override void Execute()

@@ -42,8 +42,8 @@ namespace Grinderv2.GUI
 
             if (!File.Exists(Paths.Creature))
             {
-                MessageBox.Show("creature.json 31Mb will be downloaded");
-                Console.WriteLine("downloading creature.json");
+                MessageBox.Show(@"creature.json 31Mb will be downloaded");
+                Console.WriteLine(@"downloading creature.json");
                 try
                 {
                     // Downloading the archive
@@ -56,14 +56,14 @@ namespace Grinderv2.GUI
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    Console.Write("Downloading from URL caused a crash. Aborting ");
+                    Console.Write(@"Downloading from URL caused a crash. Aborting ");
                     Console.ReadLine();
                 }
             }
             if (!File.Exists(Paths.CreatureTemplate))
             {
-                MessageBox.Show("creature_template.json 16Mb will be downloaded");
-                Console.WriteLine("downloading creature_template.json");
+                MessageBox.Show(@"creature_template.json 16Mb will be downloaded");
+                Console.WriteLine(@"downloading creature_template.json");
                 try
                 {
                     // Downloading the archive
@@ -76,7 +76,7 @@ namespace Grinderv2.GUI
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    Console.Write("Downloading from URL caused a crash. Aborting ");
+                    Console.Write(@"Downloading from URL caused a crash. Aborting ");
                     Console.ReadLine();
                 }
             }
@@ -116,7 +116,7 @@ namespace Grinderv2.GUI
             CreatureWhitelist = new List<Creature>();
             var tmp = CreatureTemplates.Rows.Where(x => Settings.Creatures.Contains(x.Name));
             foreach (var i in tmp)
-                if (Creatures.Rows.Where(x => x.Id == i.Entry && x.Map == ObjectManager.Instance.Player.MapId).Any())
+                if (Creatures.Rows.Any(x => x.Id == i.Entry && x.Map == ObjectManager.Instance.Player.MapId))
                     CreatureWhitelist.AddRange(Creatures.Rows.Where(x => x.Id == i.Entry && x.Map == ObjectManager.Instance.Player.MapId));
         }
 
@@ -143,7 +143,7 @@ namespace Grinderv2.GUI
                     && (x.NpcFlag & (int)Enums.NpcFlags.UNIT_NPC_FLAG_VENDOR) != 0));
             }
             foreach (var i in tmp)
-                if (Creatures.Rows.Where(x => x.Id == i.Entry && x.Map == ObjectManager.Instance.Player.MapId).Any())
+                if (Creatures.Rows.Any(x => x.Id == i.Entry && x.Map == ObjectManager.Instance.Player.MapId))
                     VendorWhitelist.AddRange(Creatures.Rows.Where(x => x.Id == i.Entry && x.Map == ObjectManager.Instance.Player.MapId));
         }
 

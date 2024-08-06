@@ -25,7 +25,7 @@ namespace Grinderv2.TreeTasks
         public int HerbLevel()
         {
             List<Skills.Skill> skills = Skills.Instance.GetAllPlayerSkills();
-            Skills.Skill herb = skills.Where(x => x.Id == Enums.Skills.HERBALISM).FirstOrDefault();
+            Skills.Skill herb = skills.FirstOrDefault(x => x.Id == Enums.Skills.HERBALISM);
 
             return herb != null ? ObjectManager.Instance.Player.FactionId == (int)Enums.FactionPlayerHorde.Tauren ? herb.CurrentLevel + 15 : herb.CurrentLevel : -1;
         }
@@ -46,9 +46,9 @@ namespace Grinderv2.TreeTasks
                 .Where(x => x.GatherInfo.Type == Enums.GatherType.Mining).ToList();
 
             herbNodes = herbNodes.Where(x => x.GatherInfo.RequiredSkill <= HerbLevel()
-                    && !CMD.GuidBlacklist.Any(z => z == x.Guid)).ToList();
+                    && CMD.GuidBlacklist.All(z => z != x.Guid)).ToList();
             mineNodes = mineNodes.Where(x => x.GatherInfo.RequiredSkill <= MineLevel()
-                    && !CMD.GuidBlacklist.Any(z => z == x.Guid)).ToList();
+                    && CMD.GuidBlacklist.All(z => z != x.Guid)).ToList();
 
             return herbNodes.Concat(mineNodes).OrderBy(x => x.Position.DistanceToPlayer()).FirstOrDefault();
         }

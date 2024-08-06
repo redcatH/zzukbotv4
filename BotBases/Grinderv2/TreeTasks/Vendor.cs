@@ -13,7 +13,7 @@ namespace Grinderv2.TreeTasks
 
         public override bool Activate()
         {
-            return Settings.Vendor && CMD.ShouldVendor && ObjectManager.Instance.Units.Where(x => CMD.VendorWhitelist.Any(y => y.Id == x.Id) && !x.IsDead && ObjectManager.Instance.Player.InLosWith(x)).Any();
+            return Settings.Vendor && CMD.ShouldVendor && ObjectManager.Instance.Units.Any(x => CMD.VendorWhitelist.Any(y => y.Id == x.Id) && !x.IsDead && ObjectManager.Instance.Player.InLosWith(x));
         }
 
         public override void Execute()
@@ -35,11 +35,11 @@ namespace Grinderv2.TreeTasks
                 if (frame.CanRepair && frame.TotalRepairCost < ObjectManager.Instance.Player.Money)
                     frame.RepairAll();
 
-                var item = Inventory.Instance.GetAllItems().Where(x =>
-                (Settings.KeepGreens ? !x.Quality.Equals(Enums.ItemQuality.Uncommon) : true) &&
-                (Settings.KeepBlues ? !x.Quality.Equals(Enums.ItemQuality.Rare) : true) &&
-                (Settings.KeepPurples ? !x.Quality.Equals(Enums.ItemQuality.Epic) : true) &&
-                !Settings.ProtectedItems.Contains(x.Name) && !x.Info.SellPrice.Equals(0)).FirstOrDefault();
+                var item = Inventory.Instance.GetAllItems().FirstOrDefault(x =>
+                (!Settings.KeepGreens || !x.Quality.Equals(Enums.ItemQuality.Uncommon)) &&
+                (!Settings.KeepBlues || !x.Quality.Equals(Enums.ItemQuality.Rare)) &&
+                (!Settings.KeepPurples || !x.Quality.Equals(Enums.ItemQuality.Epic)) &&
+                !Settings.ProtectedItems.Contains(x.Name) && !x.Info.SellPrice.Equals(0));
 
                 if (item != null)
                     frame.VendorByGuid(item.Guid);

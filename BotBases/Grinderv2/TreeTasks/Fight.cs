@@ -13,7 +13,7 @@ namespace Grinderv2.TreeTasks
 
         public override bool Activate()
         {
-            return PartyMembers.Where(x => NotNullOrDead(x) && x.IsInCombat).Any() && !ObjectManager.Instance.Player.IsSwimming;
+            return PartyMembers.Any(x => NotNullOrDead(x) && x.IsInCombat) && !ObjectManager.Instance.Player.IsSwimming;
         }
 
         public override void Execute()

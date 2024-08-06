@@ -14,8 +14,7 @@ namespace Grinderv2.TreeTasks
         public override bool Activate()
         {
             return Settings.Vendor && CMD.ShouldVendor 
-                && !ObjectManager.Instance.Units
-                    .Where(x => CMD.VendorWhitelist.Any(y => y.Id == x.Id && !CMD.VendorBlacklist.Keys.Contains(y)) && !x.IsDead && ObjectManager.Instance.Player.InLosWith(x)).Any();
+                && !ObjectManager.Instance.Units.Any(x => CMD.VendorWhitelist.Any(y => y.Id == x.Id && !CMD.VendorBlacklist.Keys.Contains(y)) && !x.IsDead && ObjectManager.Instance.Player.InLosWith(x));
         }
 
         public override void Execute()
